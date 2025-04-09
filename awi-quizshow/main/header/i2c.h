@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <driver/gpio.h>
 #include <driver/i2c_master.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+
+#include "registers.h"
 
 #pragma once
 
@@ -43,23 +47,6 @@ void i2c_init(void);
 void i2c_write(i2c_master_dev_handle_t, uint8_t[], uint8_t);
 void i2c_write_read(i2c_master_dev_handle_t, uint8_t[], uint8_t, uint8_t[], uint8_t);
 void i2c_write_bit(i2c_master_dev_handle_t, uint8_t, uint8_t, bool);
-
-// Definitions for the PCAL9555 registers
-#define REG_9555_INPUT_0        0x00
-#define REG_9555_INPUT_1        0x01
-#define REG_9555_OUTPUT_0       0x02
-#define REG_9555_OUTPUT_1       0x03
-#define REG_9555_POLARITY_0     0x04
-#define REG_9555_POLARITY_1     0x05
-#define REG_9555_CONFIG_0       0x06
-#define REG_9555_CONFIG_1       0x07
-#define REG_9555_IMASK_0        0x4a
-#define REG_9555_IMASK_1        0x4b
-#define REG_9555_ISTATUS_0      0x4c
-#define REG_9555_ISTATUS_1      0x4d
-
-// Definitions for the SX1508B registers
-
 
 #ifdef __cplusplus
 }

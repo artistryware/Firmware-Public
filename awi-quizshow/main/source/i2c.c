@@ -42,35 +42,35 @@ void i2c_init()
 
     // Initialize pullup on Input { RegPullUp, val } - address is autoincreament
     uint8_t pullval[] = { 
-        0x03,
-        0b11110000     // Example: Enable pull-ups for pins 4–7, disable for pins 0–3
+        REG_1508_PULL_UP,       // Reg 03 - Starting address
+        0b11110000              // Enable pull-ups for pins 4–7, disable for pins 0–3
     };
     i2c_write(dev1508Handle, pullval, sizeof(pullval));
 
     // Initialize Input/Ouput and Interrupt - { RegOpenDrain, RegPolarity, RegDir, RegData, RegInterruptMask, RegSenseHigh, RegSenseLow } - address is autoincrement
     uint8_t ioinitval[] = { 
-        0x05,       // Reg 4 - RegOpenDrain - Starting address
-        0b00000000, // RegOpenDrain Val - Open Drain 0,1,2,3 - Push/Pull 4,5,6,7
-        0b11110000, // RegPolarity val - Invert Inputs 4,5,6,7
-        0b11110000, // RegDir val - OUT=[0,1,2,3]; IN=[4,5,6,7]
-        0xff,       // RegData val - default 0xff
-        0b00001111, // RegInterruptMask val - interrupt on [4,5,6,7]
-        0b11111111, // RegSenseHigh val - both rising and falling [4,5,6,7]
-        0b00000000  // RegSenseLow val - none [0,1,2,3]
+        REG_1508_OPEN_DRAIN,    // Reg 05 - Starting address
+        0b00000000,             // RegOpenDrain Val - Open Drain 0,1,2,3 - Push/Pull 4,5,6,7
+        0b11110000,             // RegPolarity val - Invert Inputs 4,5,6,7
+        0b11110000,             // RegDir val - OUT=[0,1,2,3]; IN=[4,5,6,7]
+        0xff,                   // RegData val - default 0xff
+        0b00001111,             // RegInterruptMask val - interrupt on [4,5,6,7]
+        0b11111111,             // RegSenseHigh val - both rising and falling [4,5,6,7]
+        0b00000000              // RegSenseLow val - none [0,1,2,3]
     };
     i2c_write(dev1508Handle, ioinitval, sizeof(ioinitval));
 
     // Initialize Register Clock, use for debouncing
-    uint8_t clkval[] = { 0x0f, 0b01000000 };
+    uint8_t clkval[] = { REG_1508_CLOCK, 0b01000000 };
     i2c_write(dev1508Handle, clkval, sizeof(clkval));
 
     // Initialize Misc, LED driver, and Debounce Registers
     uint8_t miscval[] = { 
-        0x10,       // Reg 4 - RegMisc - Starting address
-        0b00010000, // RegMisc value
-        0b00001111, // RegLEDDriverEnable value
-        0b00000101, // RegDebounceConfig value
-        0b11110000  // RegDebounceEnable value
+        REG_1508_MISC,  // Reg 10 - Starting address
+        0b00010000,     // RegMisc value
+        0b00001111,     // RegLEDDriverEnable value
+        0b00000101,     // RegDebounceConfig value
+        0b11110000      // RegDebounceEnable value
     };
     i2c_write(dev1508Handle, miscval, sizeof(miscval));
 
@@ -90,18 +90,18 @@ void i2c_init()
     //i2c_write(I2C_1508_ADD, readint, sizeof(readint));
 
     // Set intensity of LEDs
-    i2c_write(dev1508Handle, (uint8_t[]) { 0x16, 0x10 }, 2); // set ORG intensity
-    i2c_write(dev1508Handle, (uint8_t[]) { 0x17, 0x07 }, 2); // set RED intensity
-    i2c_write(dev1508Handle, (uint8_t[]) { 0x19, 0x07 }, 2); // set GRN intensity
-    i2c_write(dev1508Handle, (uint8_t[]) { 0x1C, 0x40 }, 2); // set BLU intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_I_ON_0, 0x10 }, 2); // set ORG intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_I_ON_1, 0x07 }, 2); // set RED intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_I_ON_2, 0x07 }, 2); // set GRN intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_I_ON_3, 0x40 }, 2); // set BLU intensity
 
     // initialy turn on all LEDs for test
-    i2c_write(dev1508Handle, (uint8_t[]) { 0x08, 0b00000000 }, 2);
+    i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_DATA, 0b00000000 }, 2);
 
-    //vTaskDelay(pdMS_TO_TICKS(1000));    // Delay to check LEDs functioning
+    vTaskDelay(pdMS_TO_TICKS(1000));    // Delay to check LEDs functioning
 
     // after test, turn on green led only
-    i2c_write(dev1508Handle, (uint8_t[]) { 0x08, 0b00001011 }, 2);
+    i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_DATA, 0b00001011 }, 2);
 
     // initialize UE101
     /**
