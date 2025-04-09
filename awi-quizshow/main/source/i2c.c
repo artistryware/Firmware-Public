@@ -35,7 +35,7 @@ void i2c_init()
 
      i2c_device_config_t dev_1508_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-        .device_address = 0x0020,
+        .device_address = I2C_1508_ADDR,
         .scl_speed_hz = I2C_DEVICE_SPEED,
     };
     ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_1508_cfg, &dev1508Handle));
@@ -128,7 +128,7 @@ void i2c_init()
 
      i2c_device_config_t dev_UE101_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-        .device_address = 0x24,
+        .device_address = I2C_UE101_ADDR,
         .scl_speed_hz = I2C_DEVICE_SPEED,
     };
     ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_UE101_cfg, &devUE101Handle));
@@ -171,7 +171,7 @@ void i2c_init()
 
      i2c_device_config_t dev_UE102_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-        .device_address = 0x25,
+        .device_address = I2C_UE102_ADDR,
         .scl_speed_hz = I2C_DEVICE_SPEED,
     };
     ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_UE102_cfg, &devUE102Handle));

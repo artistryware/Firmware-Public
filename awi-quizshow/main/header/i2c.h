@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <driver/gpio.h>
-//#include <driver/i2c.h>
 #include <driver/i2c_master.h>
 
 #pragma once
@@ -28,9 +27,9 @@ extern i2c_master_dev_handle_t     devUE101Handle;
 extern i2c_master_dev_handle_t     devUE102Handle;
 
 // Definitions for the I2C devices
-//#define I2C_1508_ADD                0x20
-//#define I2C_UE101_ADD               0x24
-//#define I2C_UE102_ADD               0x25
+#define I2C_1508_ADDR               0x0020
+#define I2C_UE101_ADDR              0x0024
+#define I2C_UE102_ADDR              0x0025
 #define I2C_DEVICE_SPEED            100000
 
 // LED output bits on sx1508
@@ -58,6 +57,9 @@ void i2c_write_bit(i2c_master_dev_handle_t, uint8_t, uint8_t, bool);
 #define REG_9555_IMASK_1        0x4b
 #define REG_9555_ISTATUS_0      0x4c
 #define REG_9555_ISTATUS_1      0x4d
+
+// Definitions for the SX1508B registers
+
 
 #ifdef __cplusplus
 }

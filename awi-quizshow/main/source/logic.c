@@ -68,7 +68,7 @@ void scan_task()
         printf("Scanning for Player input\n");
         do {
             // get value of player inputs
-            i2c_write_read(devUE101Handle, (uint8_t[]) { 0x00 }, 1, read, 1);
+            i2c_write_read(devUE101Handle, (uint8_t[]) { REG_9555_INPUT_0 }, 1, read, 1);
 
             // small delay between input reads
             vTaskDelay(pdMS_TO_TICKS(25));
