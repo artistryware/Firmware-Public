@@ -35,6 +35,5 @@ void app_main(void)
     // initialize the board
     logic_init();
 
-    printf("IDF Version - %s\n", esp_get_idf_version());
     // this will automatic delete app_main task when return on this (app_main) function
 }

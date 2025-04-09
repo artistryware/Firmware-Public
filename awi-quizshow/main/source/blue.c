@@ -46,14 +46,14 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         }
         case ESP_SPP_OPEN_EVT:
         {
-            printf("SPP HANDLER %d\n", param->open.handle);
+            printf("SPP HANDLER %ld\n", param->open.handle);
             ESP_LOGI(SPP_TAG, "ESP_SPP_OPEN_EVT");
             break;
         }
         case ESP_SPP_CLOSE_EVT:
         {
             // turn off blue led for bluetooth
-            i2c_write_bit(I2C_1508_ADD, BLU, 1);
+            i2c_write_bit(devUE102Handle, 0x08, BLU, true);
             
             ESP_LOGI(SPP_TAG, "ESP_SPP_CLOSE_EVT");
             break;
@@ -62,7 +62,7 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         {
             ESP_LOGI(SPP_TAG, "ESP_SPP_START_EVT");
             //esp_bt_dev_set_device_name(DEVICE_NAME);
-            esp_bt_dev_set_device_name(device_name);
+            esp_bt_gap_set_device_name(device_name);
             // this will not broadcast the NAME of the BL device
             //esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
             esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
@@ -98,10 +98,11 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
             gHandle = param->open.handle;
 
             // turn on blue led for bluetooth
-            i2c_write_bit(I2C_1508_ADD, BLU, 0);
+            i2c_write_bit(devUE102Handle, 0x08, BLU, false);
 
             // initially send current player when BT connects
-            SENDPLAYER;
+            //SENDPLAYER;
+            send_player();
 
             ESP_LOGI(SPP_TAG, "ESP_SPP_SRV_OPEN_EVT");
             break;
@@ -135,7 +136,7 @@ static void esp_bt_gap_cb(esp_bt_gap_cb_event_t event, esp_bt_gap_cb_param_t *pa
             if (param->auth_cmpl.stat == ESP_BT_STATUS_SUCCESS)
             {
                 ESP_LOGI(SPP_TAG, "authentication success: %s", param->auth_cmpl.device_name);
-                esp_log_buffer_hex(SPP_TAG, param->auth_cmpl.bda, ESP_BD_ADDR_LEN);
+                ESP_LOG_BUFFER_HEX(SPP_TAG, param->auth_cmpl.bda, ESP_BD_ADDR_LEN);
             }
             else
             {

@@ -1,29 +1,28 @@
 
 #include "i2c.h"
 
+i2c_master_bus_handle_t     busHandle;
+i2c_master_dev_handle_t     dev1508Handle;
+i2c_master_dev_handle_t     devUE101Handle;
+i2c_master_dev_handle_t     devUE102Handle;
+
 void i2c_init()
 {
     // Initialize I2C Master
-    i2c_config_t conf = {
-        .mode = I2C_MODE_MASTER,
-        .sda_io_num = I2C_SDA_PIN,
-        .scl_io_num = I2C_SCL_PIN,
-        .sda_pullup_en = GPIO_PULLUP_DISABLE,
-        .scl_pullup_en = GPIO_PULLUP_DISABLE,
-        .master.clk_speed = I2C_MASTER_FREQ
+    i2c_master_bus_config_t i2c_bus_config = {
+        .i2c_port = PORT_NUMBER,
+        .sda_io_num = SDA_IO_PIN,
+        .scl_io_num = SCL_IO_PIN,
+        .clk_source = I2C_CLK_SRC_DEFAULT,
+        .glitch_ignore_cnt = 7,
+        .flags.enable_internal_pullup =  false
     };
+    i2c_master_bus_handle_t busHandle;
+    ESP_ERROR_CHECK(i2c_new_master_bus(&i2c_bus_config, &busHandle));
 
-    // Set I2C Port Number
-    i2c_param_config(I2C_MASTER_NUM, &conf);
-
-    // Install I2C Driver
-    i2c_driver_install(I2C_MASTER_NUM, I2C_MODE_MASTER, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
-
-
-    // initialize SX1508
+    // initialize SX1508B
     /**
-     * SX1508 is a READ_WRITE I2C SLAVE - Read datasheet of SX1508 for more details
-     * 
+     * SX1508B is a READ_WRITE I2C SLAVE - Read datasheet of SX1508 for more details
      *  IO[0]   - I     ORG
      *  IO[1]   - I     RED
      *  IO[2]   - I     GRN
@@ -34,32 +33,19 @@ void i2c_init()
      *  IO[7]   - I     Board ID bit 3
      */
 
-    // Reset SX1508 first
-    /* uint8_t rstval[] = { 
-        0x7d, 
-        0x12, 
-        0x34
+     i2c_device_config_t dev_1508_cfg = {
+        .dev_addr_length = I2C_ADDR_BIT_LEN_7,
+        .device_address = 0x0020,
+        .scl_speed_hz = I2C_DEVICE_SPEED,
     };
-    i2c_master_write_to_device(
-        I2C_MASTER_NUM, 
-        I2C_SLAVE_ADD, 
-        rstval, sizeof(rstval),
-        I2C_MASTER_TIMEOUT
-    ); */
-    
-     // Initialize input buffer, disable if LED use
-    /*uint8_t inputbuff[] = { 
-        0x00, 
-        0b00001111
-    };
-    i2c_write(I2C_1508_ADD, inputbuff, sizeof(inputbuff));*/
+    ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_1508_cfg, &dev1508Handle));
 
     // Initialize pullup on Input { RegPullUp, val } - address is autoincreament
     uint8_t pullval[] = { 
         0x03,
         0b11110000     // Example: Enable pull-ups for pins 4–7, disable for pins 0–3
     };
-    i2c_write(I2C_1508_ADD, pullval, sizeof(pullval));
+    i2c_write(dev1508Handle, pullval, sizeof(pullval));
 
     // Initialize Input/Ouput and Interrupt - { RegOpenDrain, RegPolarity, RegDir, RegData, RegInterruptMask, RegSenseHigh, RegSenseLow } - address is autoincrement
     uint8_t ioinitval[] = { 
@@ -72,11 +58,11 @@ void i2c_init()
         0b11111111, // RegSenseHigh val - both rising and falling [4,5,6,7]
         0b00000000  // RegSenseLow val - none [0,1,2,3]
     };
-    i2c_write(I2C_1508_ADD, ioinitval, sizeof(ioinitval));
+    i2c_write(dev1508Handle, ioinitval, sizeof(ioinitval));
 
     // Initialize Register Clock, use for debouncing
     uint8_t clkval[] = { 0x0f, 0b01000000 };
-    i2c_write(I2C_1508_ADD, clkval, sizeof(clkval));
+    i2c_write(dev1508Handle, clkval, sizeof(clkval));
 
     // Initialize Misc, LED driver, and Debounce Registers
     uint8_t miscval[] = { 
@@ -86,7 +72,7 @@ void i2c_init()
         0b00000101, // RegDebounceConfig value
         0b11110000  // RegDebounceEnable value
     };
-    i2c_write(I2C_1508_ADD, miscval, sizeof(miscval));
+    i2c_write(dev1508Handle, miscval, sizeof(miscval));
 
     // Initialize LED driver
     //uint8_t ledval[] = { 0x11, 0b00001111 };
@@ -104,20 +90,22 @@ void i2c_init()
     //i2c_write(I2C_1508_ADD, readint, sizeof(readint));
 
     // Set intensity of LEDs
-    i2c_write(I2C_1508_ADD, (uint8_t[]) { 0x16, 0x10 }, 2); // set ORG intensity
-    i2c_write(I2C_1508_ADD, (uint8_t[]) { 0x17, 0x07 }, 2); // set RED intensity
-    i2c_write(I2C_1508_ADD, (uint8_t[]) { 0x19, 0x07 }, 2); // set GRN intensity
-    i2c_write(I2C_1508_ADD, (uint8_t[]) { 0x1C, 0x40 }, 2); // set BLU intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { 0x16, 0x10 }, 2); // set ORG intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { 0x17, 0x07 }, 2); // set RED intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { 0x19, 0x07 }, 2); // set GRN intensity
+    i2c_write(dev1508Handle, (uint8_t[]) { 0x1C, 0x40 }, 2); // set BLU intensity
 
-    vTaskDelay(pdMS_TO_TICKS(1000));    // Delay to check LEDs functioning
+    // initialy turn on all LEDs for test
+    i2c_write(dev1508Handle, (uint8_t[]) { 0x08, 0b00000000 }, 2);
 
-    // initialy turn on green led only
-    i2c_write(I2C_1508_ADD, (uint8_t[]) { 0x08, 0b00001011 }, 2);
+    //vTaskDelay(pdMS_TO_TICKS(1000));    // Delay to check LEDs functioning
+
+    // after test, turn on green led only
+    i2c_write(dev1508Handle, (uint8_t[]) { 0x08, 0b00001011 }, 2);
 
     // initialize UE101
     /**
      * PCAL9555 is a READ_WRITE I2C SLAVE - Read datasheet of PCAL9555 for more details
-     * 
      * BANK A
      *  IO[0]   - I     PLAYER 1 PUSHBUTTON
      *  IO[1]   - I     PLAYER 2 PUSHBUTTON
@@ -127,7 +115,6 @@ void i2c_init()
      *  IO[5]   - I     PLAYER 6 PUSHBUTTON
      *  IO[6]   - I     Not Connected on PCAL9555
      *  IO[7]   - I     Not Connected on PCAL9555
-     * 
      * BANK B
      *  IO[8]   - I     Not Used
      *  IO[9]   - I     Not Used
@@ -139,21 +126,28 @@ void i2c_init()
      *  IO[15]  - O     Not Connected on PCAL9555
      */
 
+     i2c_device_config_t dev_UE101_cfg = {
+        .dev_addr_length = I2C_ADDR_BIT_LEN_7,
+        .device_address = 0x24,
+        .scl_speed_hz = I2C_DEVICE_SPEED,
+    };
+    ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_UE101_cfg, &devUE101Handle));
+
      // Initialize polarity and configuration { RegPolarity, val, val, val, val } - address is autoincreament
+     // All other registers power up to acceptable defaults
     uint8_t ue101_config[] = { 
-        0x04,       // Reg 4 - Polarity Port 0 - Starting address
-        0b11111111, // Reg 4 val - Port 0 inputs inverted
-        0b11111111, // Reg 5 val - Port 1 inputs inverted
-        0b11111111, // Reg 6 val - Port 0 all inputs
-        0b11111111  // Reg 7 val - Port 1 all inputs
+        REG_9555_POLARITY_0,    // Polarity Port 0 - Starting address
+        0b11111111,             // Reg 4 val - Port 0 inputs inverted
+        0b11111111,             // Reg 5 val - Port 1 inputs inverted
+        0b11111111,             // Reg 6 val - Port 0 all inputs
+        0b11111111              // Reg 7 val - Port 1 all inputs
 
     };
-    i2c_write(I2C_UE101_ADD, ue101_config, sizeof(ue101_config));
+    i2c_write(devUE101Handle, ue101_config, sizeof(ue101_config));
 
     // initialize UE102
     /**
      * PCAL9555 is a READ_WRITE I2C SLAVE - Read datasheet of PCAL9555 for more details
-     * 
      * BANK A
      *  IO[0]   - I     PLAYER 1 PUSHBUTTON LAMP
      *  IO[1]   - I     PLAYER 2 PUSHBUTTON LAMP
@@ -175,47 +169,69 @@ void i2c_init()
      *  IO[15]  - O     Not Connected on PCAL9555
      */
 
+     i2c_device_config_t dev_UE102_cfg = {
+        .dev_addr_length = I2C_ADDR_BIT_LEN_7,
+        .device_address = 0x25,
+        .scl_speed_hz = I2C_DEVICE_SPEED,
+    };
+    ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_UE102_cfg, &devUE102Handle));
+
      // Initialize UE102 configuration { RegConfiguration, val, val, val, val } - address is autoincreament
+     // All other registers power up to acceptable defaults
     uint8_t ue102_config[] = { 
-        0x06,       // Reg 6 - Configuration Port 0 - Starting address
-        0b00000000, // Reg 6 val - Port 0 all outputs
-        0b00000000  // Reg 7 val - Port 1 all outputs
+        REG_9555_CONFIG_0,  // Configuration Port 0 - Starting address
+        0b00000000,         // Reg 6 val - Port 0 all outputs
+        0b00000000          // Reg 7 val - Port 1 all outputs
 
     };
-    i2c_write(I2C_UE102_ADD, ue102_config, sizeof(ue102_config));
+    i2c_write(devUE102Handle, ue102_config, sizeof(ue102_config));
 
 }
 
-// Write -> SX1508
-void i2c_write(uint8_t addr, uint8_t data[], uint8_t size)
+/**
+ * Perform a write operation on an I2C device on the master bus.
+ * 
+ * @param   device   Device handle added to master bus.
+ * @param   data[]   Data to write to I2C device. Include register address and register value.
+ * @param   size     Size of the data being written.
+ * 
+ */
+void i2c_write(i2c_master_dev_handle_t device, uint8_t data[], uint8_t size)
 {
-    i2c_master_write_to_device(
-        I2C_MASTER_NUM,
-        addr,
-        data, size,
-        I2C_MASTER_TIMEOUT
-    );
+    i2c_master_transmit(device, data, size, I2C_MASTER_TIMEOUT_MS);
 }
 
-// Write and Read <-> SX1508
-void i2c_write_read(uint8_t addr, uint8_t wdata[], uint8_t wsize, uint8_t rdata[], uint8_t rsize)
+/**
+ * Perform a write/read operation on an I2C device on the master bus.
+ * 
+ * @param   device      Device handle added to master bus.
+ * @param   wdata[]     Starting register address to read data from.
+ * @param   wsize       Size of the register address.
+ * @param   rdata[]     Variable to store the read value.
+ * @param   rsize       Size of the read variable.
+ * 
+ */
+void i2c_write_read(i2c_master_dev_handle_t device, uint8_t wdata[], uint8_t wsize, uint8_t rdata[], uint8_t rsize)
 {
-    i2c_master_write_read_device(
-        I2C_MASTER_NUM,
-        addr,
-        wdata, wsize,
-        rdata, rsize,
-        I2C_MASTER_TIMEOUT
-    );
+    i2c_master_transmit_receive(device, wdata, wsize, rdata, rsize, I2C_MASTER_TIMEOUT_MS);
 }
 
-// for writing single bit on i2c SX1508
-void i2c_write_bit(uint8_t addr, uint8_t bit, bool val)
+/**
+ * Perform a write operation on an I2C device on the master bus.
+ * Uses a single 8 bit register.
+ * 
+ * @param   device      Device handle added to master bus.
+ * @param   reg         Register for setting the bit.
+ * @param   bit         Bit position to set/reset.
+ * @param   val         Requested value of the bit.
+ * 
+ */
+void i2c_write_bit(i2c_master_dev_handle_t device, uint8_t reg, uint8_t bit, bool val)
 {
     //uint8_t* read = malloc(sizeof(uint16_t));
     uint8_t* read = malloc(sizeof(uint8_t));
 
-    i2c_write_read(addr, (uint8_t[]) { 0x08 }, 1, read, 1);
+    i2c_write_read(device, (uint8_t[]) { reg }, 1, read, 1);
 
     //printf("SX1508- %x\n", *read);
     if (val)
@@ -229,7 +245,7 @@ void i2c_write_bit(uint8_t addr, uint8_t bit, bool val)
 
     //printf("SX1508 - %x\n", *read);
 
-    i2c_write(addr, (uint8_t[]) {0x08, *read }, 2);
+    i2c_write(device, (uint8_t[]) {reg, *read }, 2);
 
     free(read);
 }

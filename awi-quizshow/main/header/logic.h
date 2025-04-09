@@ -39,26 +39,21 @@ extern "C" {
 #define PLYR6FIRST  { 0x02, 0b00100000, 0b00100000 }
 
 // Definitions for turning AC outputs ON/OFF
-#define AC1_ON      gpio_set_level(13, 1)
-#define AC1_OFF     gpio_set_level(13, 0)
-#define AC2_ON      gpio_set_level(12, 1)
-#define AC2_OFF     gpio_set_level(12, 0)
+#define BUZZER_ON   gpio_set_level(13, 1)
+#define BUZZER_OFF  gpio_set_level(13, 0)
 
 // Definition for BT notification value
 #define RST_VAL     *((uint32_t*) "RST")
 
-// Definition for sending first player to BT
-#define SENDPLAYER  blue_send((uint8_t*) &player)
-
 extern TaskHandle_t scanHandle;
-// variable for which player pressed first
-static uint8_t player;
 
 void logic_init();
 
 void logic_task();
 
 void scan_task();
+
+void send_player();
 
 #ifdef __cplusplus
 }
