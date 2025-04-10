@@ -6,6 +6,10 @@ i2c_master_dev_handle_t     dev1508Handle;
 i2c_master_dev_handle_t     devUE101Handle;
 i2c_master_dev_handle_t     devUE102Handle;
 
+/**
+ * Initialize I2C master bus and configure devices
+ *
+ */ 
 void i2c_init()
 {
     // Initialize I2C Master
@@ -49,7 +53,7 @@ void i2c_init()
 
     // Initialize Input/Ouput and Interrupt - { RegOpenDrain, RegPolarity, RegDir, RegData, RegInterruptMask, RegSenseHigh, RegSenseLow } - address is autoincrement
     uint8_t ioinitval[] = { 
-        REG_1508_OPEN_DRAIN,    // Reg 05 - Starting address
+        REG_1508_OPEN_DRAIN,    // Reg 05 - Starting address - address is autoincreament
         0b00000000,             // RegOpenDrain Val - Open Drain 0,1,2,3 - Push/Pull 4,5,6,7
         0b11110000,             // RegPolarity val - Invert Inputs 4,5,6,7
         0b11110000,             // RegDir val - OUT=[0,1,2,3]; IN=[4,5,6,7]
@@ -66,7 +70,7 @@ void i2c_init()
 
     // Initialize Misc, LED driver, and Debounce Registers
     uint8_t miscval[] = { 
-        REG_1508_MISC,  // Reg 10 - Starting address
+        REG_1508_MISC,  // Reg 10 - Starting address - address is autoincreament
         0b00010000,     // RegMisc value
         0b00001111,     // RegLEDDriverEnable value
         0b00000101,     // RegDebounceConfig value
@@ -98,7 +102,7 @@ void i2c_init()
     // initialy turn on all LEDs for test
     i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_DATA, 0b00000000 }, 2);
 
-    vTaskDelay(pdMS_TO_TICKS(1000));    // Delay to check LEDs functioning
+    vTaskDelay(pdMS_TO_TICKS(500));    // Delay to check LEDs functioning
 
     // after test, turn on green led only
     i2c_write(dev1508Handle, (uint8_t[]) { REG_1508_DATA, 0b00001011 }, 2);
@@ -129,14 +133,14 @@ void i2c_init()
      i2c_device_config_t dev_UE101_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address = I2C_UE101_ADDR,
-        .scl_speed_hz = I2C_DEVICE_SPEED,
+        .scl_speed_hz = I2C_DEVICE_SPEED
     };
     ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_UE101_cfg, &devUE101Handle));
 
      // Initialize polarity and configuration { RegPolarity, val, val, val, val } - address is autoincreament
      // All other registers power up to acceptable defaults
     uint8_t ue101_config[] = { 
-        REG_9555_POLARITY_0,    // Polarity Port 0 - Starting address
+        REG_9555_POLARITY_0,    // Polarity Port 0 - Starting address - address is autoincreament
         0b11111111,             // Reg 4 val - Port 0 inputs inverted
         0b11111111,             // Reg 5 val - Port 1 inputs inverted
         0b11111111,             // Reg 6 val - Port 0 all inputs
@@ -172,7 +176,7 @@ void i2c_init()
      i2c_device_config_t dev_UE102_cfg = {
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address = I2C_UE102_ADDR,
-        .scl_speed_hz = I2C_DEVICE_SPEED,
+        .scl_speed_hz = I2C_DEVICE_SPEED
     };
     ESP_ERROR_CHECK(i2c_master_bus_add_device(busHandle, &dev_UE102_cfg, &devUE102Handle));
 
@@ -220,10 +224,10 @@ void i2c_write_read(i2c_master_dev_handle_t device, uint8_t wdata[], uint8_t wsi
  * Perform a write operation on an I2C device on the master bus.
  * Uses a single 8 bit register.
  * 
- * @param   device      Device handle added to master bus.
- * @param   reg         Register for setting the bit.
- * @param   bit         Bit position to set/reset.
- * @param   val         Requested value of the bit.
+ * @param   device  Device handle added to master bus.
+ * @param   reg     Register for setting the bit.
+ * @param   bit     Bit position to set/reset.
+ * @param   val     Requested value of the bit.
  * 
  */
 void i2c_write_bit(i2c_master_dev_handle_t device, uint8_t reg, uint8_t bit, bool val)
@@ -248,4 +252,16 @@ void i2c_write_bit(i2c_master_dev_handle_t device, uint8_t reg, uint8_t bit, boo
     i2c_write(device, (uint8_t[]) {reg, *read }, 2);
 
     free(read);
+}
+
+/**
+ * Turn ON/OFF the LED outputs on the SX1508
+ * 
+ * @param   led     LED to turn ON/OFF.
+ * @param   val     Use defines LED_ON or LED_OFF.
+ * 
+ */
+void i2c_write_led(uint8_t led, bool val) 
+{
+    i2c_write_bit(dev1508Handle, REG_1508_DATA, led, val);
 }

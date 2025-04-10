@@ -42,11 +42,15 @@ extern i2c_master_dev_handle_t     devUE102Handle;
 #define GRN     2
 #define BLU     3
 
+#define LED_ON      false
+#define LED_OFF     true
+
 // Declarations of I2C methods
 void i2c_init(void);
 void i2c_write(i2c_master_dev_handle_t, uint8_t[], uint8_t);
 void i2c_write_read(i2c_master_dev_handle_t, uint8_t[], uint8_t, uint8_t[], uint8_t);
 void i2c_write_bit(i2c_master_dev_handle_t, uint8_t, uint8_t, bool);
+void i2c_write_led(uint8_t led, bool val);
 
 #ifdef __cplusplus
 }

@@ -53,7 +53,7 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         case ESP_SPP_CLOSE_EVT:
         {
             // turn off blue led for bluetooth
-            i2c_write_bit(devUE102Handle, REG_1508_DATA, BLU, true);
+            i2c_write_led(BLU, LED_OFF);
             
             ESP_LOGI(SPP_TAG, "ESP_SPP_CLOSE_EVT");
             break;
@@ -98,7 +98,7 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
             gHandle = param->open.handle;
 
             // turn on blue led for bluetooth
-            i2c_write_bit(devUE102Handle, REG_1508_DATA, BLU, false);
+            i2c_write_led(BLU, LED_ON);
 
             // initially send current player when BT connects
             //SENDPLAYER;
