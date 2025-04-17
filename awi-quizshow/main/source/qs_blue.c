@@ -1,7 +1,7 @@
 
-#include "blue.h"
-#include "i2c.h"
-#include "logic.h"
+#include "qs_blue.h"
+#include "qs_i2c.h"
+#include "qs_logic.h"
 
 // address of device base on dip switch
 //#define ADDRESS gpio_get_level(GPIO_NUM_34) << 0 | gpio_get_level(GPIO_NUM_25) << 1 | gpio_get_level(GPIO_NUM_26) << 2 | gpio_get_level(GPIO_NUM_27) << 3

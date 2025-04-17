@@ -9,8 +9,8 @@
 #include <esp_log.h>
 #include <nvs.h>
 #include <nvs_flash.h>
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
+//#include <freertos/FreeRTOS.h>    // First called in qs_i2c.h
+//#include <freertos/task.h>        // First called in qs_i2c.h
 
 #include <esp_bt.h>
 #include <esp_bt_main.h>
@@ -32,10 +32,8 @@ extern "C" {
 // it will declare a different variable
 extern TaskHandle_t btHandler;
 
-void bt_device_name();
-
+// Declarations of bluetooth methods
 void bt_init();
-
 void blue_send(uint8_t*);
 
 #ifdef __cplusplus

@@ -1,5 +1,5 @@
 
-#include "i2c.h"
+#include "qs_i2c.h"
 
 i2c_master_bus_handle_t     busHandle;
 i2c_master_dev_handle_t     dev1508Handle;

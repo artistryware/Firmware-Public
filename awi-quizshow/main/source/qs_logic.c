@@ -1,6 +1,6 @@
 
-#include "logic.h"
-#include "i2c.h"
+#include "qs_logic.h"
+#include "qs_i2c.h"
 #include "esp_log.h"
 
 TaskHandle_t scanHandle;
@@ -9,8 +9,6 @@ TaskHandle_t scanHandle;
 static uint8_t* read;
 // variable for which player pressed first
 static uint8_t player;
-// buzzer on time
-#define buzTime 1500
 
 
 // initlaize the UB board
@@ -108,7 +106,7 @@ void scan_task()
         // turn on buzzer
         BUZZER_ON;
         // delay for buzzer
-        vTaskDelay(pdMS_TO_TICKS(buzTime));
+        vTaskDelay(pdMS_TO_TICKS(BUZZTIME));
         // turn off buzzer
         BUZZER_OFF;
 

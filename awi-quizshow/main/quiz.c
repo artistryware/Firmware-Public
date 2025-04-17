@@ -8,9 +8,9 @@
 
 #include <driver/gpio.h>
 
-#include "gpio.h"
-#include "i2c.h"
-#include "logic.h"
+#include "qs_gpio.h"
+#include "qs_i2c.h"
+#include "qs_logic.h"
 
 void app_main(void)
 {

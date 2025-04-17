@@ -27,6 +27,7 @@ extern "C" {
 #define AC1_PIN                     13
 #define AC2_PIN                     12
 
+// Declarations of gpio methods
 void io_config(void);
 
 #ifdef __cplusplus

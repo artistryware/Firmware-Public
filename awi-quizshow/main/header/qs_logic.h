@@ -7,10 +7,10 @@
 #include <stdbool.h>
 
 #include <esp_log.h>
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
+//#include <freertos/FreeRTOS.h>    // First called in qs_i2c.h
+//#include <freertos/task.h>        // First called in qs_i2c.h
 
-#include "blue.h"
+#include "qs_blue.h"
 
 #ifndef __LOGIC_H__
 #define __LOGIC_H__
@@ -41,18 +41,19 @@ extern "C" {
 // Definitions for turning AC outputs ON/OFF
 #define BUZZER_ON   gpio_set_level(13, 1)
 #define BUZZER_OFF  gpio_set_level(13, 0)
+// buzzer on time
+#define BUZZTIME    1500
 
 // Definition for BT notification value
 #define RST_VAL     *((uint32_t*) "RST")
 
+// Handles for external access to logic tasks
 extern TaskHandle_t scanHandle;
 
+// Declarations of logic methods
 void logic_init();
-
 void logic_task();
-
 void scan_task();
-
 void send_player();
 
 #ifdef __cplusplus

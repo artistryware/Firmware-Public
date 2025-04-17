@@ -7,7 +7,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-#include "registers.h"
+#include "i2c_registers.h"
 
 #pragma once
 

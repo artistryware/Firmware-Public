@@ -1,11 +1,6 @@
 
 #include <driver/gpio.h>
-#include "gpio.h"
-
-#include "blue.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
+#include "qs_gpio.h"
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
@@ -26,7 +21,7 @@ void io_config()
     //gpio_set_pull_mode(GPIO_NUM_13, GPIO_PULLUP_DISABLE);
     gpio_set_level(AC1_PIN, 0);
 
-    printf("Minimum free heap size: %ld bytes\n", esp_get_minimum_free_heap_size());
+    //printf("Minimum free heap size: %ld bytes\n", esp_get_minimum_free_heap_size());
     // END ADDED
 
 }
