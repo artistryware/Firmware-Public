@@ -15,7 +15,7 @@
 void app_main(void)
 {
     // initialize io
-    io_config();
+    io_init();
 
     // initialize i2c
     i2c_init();

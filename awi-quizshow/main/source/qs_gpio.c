@@ -5,7 +5,7 @@
 #define ESP_INTR_FLAG_DEFAULT 0
 
 // IO Configuration
-void io_config()
+void io_init()
 {
     // RESET_1508_PIN as Output - SX1508 Reset Pin
     gpio_reset_pin(RESET_1508_PIN);

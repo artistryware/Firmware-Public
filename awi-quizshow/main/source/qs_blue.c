@@ -10,9 +10,9 @@
 #define SPP_SERVER_NAME "SPP_SERVER"
 #define DEVICE_NAME "AWI_QUIZ_SHOW"
 
-static const esp_spp_mode_t esp_spp_mode = ESP_SPP_MODE_CB;
-static const esp_spp_sec_t sec_mask = ESP_SPP_SEC_AUTHENTICATE;
-static const esp_spp_role_t role_slave = ESP_SPP_ROLE_SLAVE;
+static const esp_spp_mode_t     esp_spp_mode = ESP_SPP_MODE_CB;
+static const esp_spp_sec_t      sec_mask = ESP_SPP_SEC_AUTHENTICATE;
+static const esp_spp_role_t     role_slave = ESP_SPP_ROLE_SLAVE;
 
 
 uint8_t ADDRESS = 0x00;
@@ -272,9 +272,18 @@ void bt_init()
     //esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
 
     // initialize the SPP, when initializing the SPP, the esp_spp_cb callback will called by the esp_spp_register_callback
-    if ((ret = esp_spp_init(esp_spp_mode)) != ESP_OK)
+    /*if ((ret = esp_spp_init(esp_spp_mode)) != ESP_OK)
     {
         ESP_LOGE(SPP_TAG, "%s spp init failed: %s\n", __func__, esp_err_to_name(ret));
+        return;
+    }*/
+    esp_spp_cfg_t bt_spp_cfg = {
+        .mode = esp_spp_mode,
+        .enable_l2cap_ertm = true,
+        .tx_buffer_size = 0, /* Only used for ESP_SPP_MODE_VFS mode */
+    };
+    if ((ret = esp_spp_enhanced_init(&bt_spp_cfg)) != ESP_OK) {
+        ESP_LOGE(SPP_TAG, "%s spp init failed: %s", __func__, esp_err_to_name(ret));
         return;
     }
 
