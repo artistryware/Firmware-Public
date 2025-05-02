@@ -148,6 +148,8 @@ void i2c_init()
 
     };
     i2c_write(devUE101Handle, ue101_config, sizeof(ue101_config));
+    // Initialize interrupt mask on port 0 - interrupt on inputs 0..6
+    i2c_write(devUE101Handle, (uint8_t[]) {REG_9555_IMASK_0, 0b11000000}, 2);
 
     // initialize UE102
     /**
@@ -264,4 +266,30 @@ void i2c_write_bit(i2c_master_dev_handle_t device, uint8_t reg, uint8_t bit, boo
 void i2c_write_led(uint8_t led, bool val) 
 {
     i2c_write_bit(dev1508Handle, REG_1508_DATA, led, val);
+}
+
+/**
+ * Read inputs from port 0 of UE101
+ * 
+ * @param   NONE
+ * @return  uint8_t port 0 value
+ * 
+ */
+uint8_t i2c_get_player() {
+    uint8_t read = 0;
+
+    i2c_write_read(devUE101Handle, (uint8_t[]) { REG_9555_INPUT_0 }, 1, &read, 1);
+
+    return read;
+}
+
+/**
+ * Write outputs to the UE102
+ * 
+ * @param   lamps[]     An ARRAY[3] - Register, port 0 value, port 1 value
+ * 
+ */
+void i2c_write_lamps(uint8_t lamps[]) {
+
+    i2c_write(devUE102Handle, lamps, 3);
 }

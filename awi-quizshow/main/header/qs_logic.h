@@ -20,6 +20,9 @@
 extern "C" {
 #endif
 
+// Handles for external access to logic tasks
+extern TaskHandle_t scanHandle;
+
 // Definitions for player bit from I2C read
 #define PLYR1(r)    ((*r & (1<<0)) >= 1)    // Player 1 Pushbutton pressed
 #define PLYR2(r)    ((*r & (1<<1)) >= 1)    // Player 2 Pushbutton pressed
@@ -41,14 +44,11 @@ extern "C" {
 // Definitions for turning AC outputs ON/OFF
 #define BUZZER_ON   gpio_set_level(13, 1)
 #define BUZZER_OFF  gpio_set_level(13, 0)
-// buzzer on time
-#define BUZZTIME    1500
+#define BUZZ_TIME   1500
 
 // Definition for BT notification value
-#define RST_VAL     *((uint32_t*) "RST")
-
-// Handles for external access to logic tasks
-extern TaskHandle_t scanHandle;
+#define RST_VAL     *((uint32_t*) "RST")    // Value from BT for restart function
+#define CHK_VAL     *((uint32_t*) "CHK")    // Value from BT for checking connection
 
 // Declarations of logic methods
 void logic_init();

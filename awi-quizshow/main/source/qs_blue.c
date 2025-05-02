@@ -95,16 +95,16 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         }
         case ESP_SPP_SRV_OPEN_EVT:
         {
+            ESP_LOGI(SPP_TAG, "ESP_SPP_SRV_OPEN_EVT");
+            
             gHandle = param->open.handle;
 
             // turn on blue led for bluetooth
             i2c_write_led(BLU, LED_ON);
 
             // initially send current player when BT connects
-            //SENDPLAYER;
             send_player();
 
-            ESP_LOGI(SPP_TAG, "ESP_SPP_SRV_OPEN_EVT");
             break;
         }
         case ESP_SPP_SRV_STOP_EVT:
