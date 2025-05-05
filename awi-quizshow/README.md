@@ -22,13 +22,11 @@ To run this example, you should have an Artistryware UI100B main control board c
 | Board  | SDA  | SCL  |
 | ------ | ---- | ---- |
 | UI100B |  21  |  22  |
-| ------ | ---- | ---- |
 
 | Board  | Address |
 | ------ | ------- |
 | UE101A | 0x0024  |
 | UE102A | 0x0025  |
-| ------ | ------- |
 
 #### UE101A Inputs
 
@@ -39,7 +37,6 @@ Player button inputs are wired to the UE101A 12 position screw terminal connecto
 | Player | 1 | 2 | 3 | 4 | 5 | 6 | Restart |
 | ------ | - | - | - | - | - | - | ------- |
 |        | 1 | 2 | 3 | 4 | 5 | 6 |    7    |
-| ------ | - | - | - | - | - | - | ------- |
 
 #### UE102A Outputs
 
@@ -50,7 +47,6 @@ Indicators include button LEDs and for the front indicators we used LED truck ru
 | Button | 1 | 2 | 3 | 4 | 5 | 6 |      | Indicator | 1 | 2 | 3 | 4  | 5  | 6  |
 | ------ | - | - | - | - | - | - |      | --------- | - | - | - | -- | -- | -- |
 |        | 1 | 2 | 3 | 4 | 5 | 6 |      |           | 7 | 8 | 9 | 10 | 11 | 12 |
-| ------ | - | - | - | - | - | - |      | --------- | - | - | - | -- | -- | -- |
 
 ### Build and Flash
 
