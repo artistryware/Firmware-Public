@@ -13,7 +13,7 @@ More information on the ArtistryWare line of IoT boards can be found at https://
 
 ### Hardware Required
 
-To run this example, you should have an Artistryware UI100B main control board connected to a UE101A and UE102A expansion board. Please feel free to contact us if you would like to purchase these boards.
+To run this example, you should have an Artistryware UI100B main control board connected to a UE101A and UE102A expansion boards. Please feel free to contact us if you would like to purchase these boards.
 
 #### I2C Assignments
 
