@@ -2,7 +2,7 @@
 
 | Boards Used | UI100B  | UE101A | UI102A |
 | ----------- | ------- | ------ | ------ |
-|             | Control | Input  | Output |
+|             | Control |  Input | Output |
 
 ## Overview
 
