@@ -1,15 +1,27 @@
 # AWI Quiz Show
 
+This firmware provides an example of how to use the UE101A (input) and UE102A (output) expansion boards as well as the UI100B AC control.
+
 | Boards Used | UI100B  | UE101A | UI102A |
 | ----------- | ------- | ------ | ------ |
 |             | Control |  Input | Output |
 
 ## Overview
 
-This firmware utilizes the UI100B (control board) as a quiz show style processor. It reads up to six (6) player button inputs using the UE101A (input expansion) and indicates which player pressed first using the UE102A (output expansion) driving LED indicators. An app has been created to connect with the controller via Bluetooth to get player feedback and restart the player input scanning.
+This firmware utilizes the UI100B (control board) as a quiz show style processor. It reads up to six (6) player button inputs using the UE101A (input expansion) and indicates which player pressed first using the UE102A (output expansion) driving LED indicators. The UI100B also controls an AC buzzer when the player hits the button. An app has been created to connect with the controller via Bluetooth to get player feedback and restart the player input scanning.
 More information on the ArtistryWare line of IoT boards can be found at https://artistryware.com/iot/.
 
 ## How to use the firmware
+
+### Firmware structure
+
+All functions are contained in separate header and source files. The main file starts the tasks needed for functioning and then closes.
+
+| Function  | Header     | Source     | Description                             |
+| GPIO      | qs_gpio.h  | qs_gpio.c  | GPIO configuration                      |
+| I2C       | qs_i2c.h   | qs_i2c.c   | I2C initialization and processing       |
+| Bluetooth | qs_blue.h  | qs_blue.c  | Bluetooth SPP connection and processing |
+| Logic     | qs_logic.h | qs_logic.c | FreeRTOS tasks and function processing  |
 
 ### Hardware Required
 
