@@ -54,7 +54,7 @@ Indicators include button LEDs and, for the front indicators, we used LED truck 
 
 ### AWI Quiz Show App
 
-An Android app has been created using the MIT App Inventor website and can be used to get player input feedback and restart the scanning. 
+An Android app has been created using the MIT App Inventor website and can be used to get player input feedback and restart the scanning. In order to use the app, it is first necessary to pair with the UI100B in 'Settings' using the name 'AWI_QUIZ_SHOW'. Once paired, the app will automatically connect with the board.
 
 ### Build and Flash
 
