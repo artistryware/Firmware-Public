@@ -31,6 +31,9 @@ extern TaskHandle_t scanHandle;
 #define PLYR5(r)    ((*r & (1<<4)) >= 1)    // Player 5 Pushbutton pressed
 #define PLYR6(r)    ((*r & (1<<5)) >= 1)    // Player 6 Pushbutton pressed
 
+// Definitions for restart input from I2C read
+#define RSTRT(r)    ((*r & (1<<0)) >= 1)    // Restart Pushbutton pressed
+
 // Definitions for player lamp/indicator I2C values
 // Data order - Register address, Port 0 value, Port 1 value
 #define CLEARLAMPS  { REG_9555_OUTPUT_0, 0b00111111, 0b00000000 }
@@ -44,7 +47,7 @@ extern TaskHandle_t scanHandle;
 // Definitions for turning AC outputs ON/OFF
 #define BUZZER_ON   gpio_set_level(13, 1)
 #define BUZZER_OFF  gpio_set_level(13, 0)
-#define BUZZ_TIME   1500
+#define BUZZ_TIME   1000
 
 // Definition for BT notification value
 #define RST_VAL     *((uint32_t*) "RST")    // Value from BT for restart function

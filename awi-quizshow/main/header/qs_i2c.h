@@ -49,6 +49,7 @@ void i2c_write_read(i2c_master_dev_handle_t, uint8_t[], uint8_t, uint8_t[], uint
 void i2c_write_bit(i2c_master_dev_handle_t, uint8_t, uint8_t, bool);
 void i2c_write_led(uint8_t led, bool val);
 uint8_t i2c_get_player();
+uint8_t i2c_get_restart();
 void i2c_write_lamps(uint8_t lamps[]);
 
 #ifdef __cplusplus

@@ -51,6 +51,15 @@ void logic_task()
                 // DO NOTHING
             }
         }
+        // When scan task is supended, check for restart button input
+        if (eTaskGetState(scanHandle) == eSuspended) {
+            // Read port 1 of UE101A
+            *read = i2c_get_restart();
+            // Check if restart button pressed
+            if (RSTRT(read)) {
+                logic_init();
+            }
+        }
     }
     
 }

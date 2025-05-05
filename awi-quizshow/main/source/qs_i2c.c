@@ -284,6 +284,21 @@ uint8_t i2c_get_player() {
 }
 
 /**
+ * Read inputs from port 1 of UE101
+ * 
+ * @param   NONE
+ * @return  uint8_t port 1 value
+ * 
+ */
+uint8_t i2c_get_restart() {
+    uint8_t read = 0;
+
+    i2c_write_read(devUE101Handle, (uint8_t[]) { REG_9555_INPUT_1 }, 1, &read, 1);
+
+    return read;
+}
+
+/**
  * Write outputs to the UE102
  * 
  * @param   lamps[]     An ARRAY[3] - Register, port 0 value, port 1 value
