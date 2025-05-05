@@ -62,4 +62,4 @@ Enter `idf.py -p PORT flash monitor` to build, flash and monitor the project.
 
 ## Troubleshooting
 
-(For any technical queries, please open an [issue](https://github.com/espressif/esp-idf/issues) on GitHub. We will get back to you as soon as possible.)
+(For any technical queries, please open an [issue](https://github.com/artistryware/Firmware-Public/issues) on GitHub. We will get back to you as soon as possible.)
