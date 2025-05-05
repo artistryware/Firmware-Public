@@ -42,7 +42,7 @@ Player button inputs are wired to the UE101A 12 position screw terminal connecto
 
 **Note** All indicators should be LED and less than 200mA each. A separate ground needs to be run to the UE102A two position connector.
 
-Indicators include button LEDs and for the front indicators we used LED truck running lights. These are connected to the UE102A 12 position screw terminal connector as follows:
+Indicators include button LEDs and, for the front indicators, we used LED truck running lights. These are connected to the UE102A 12 position screw terminal connector as follows:
 
 | Button | 1 | 2 | 3 | 4 | 5 | 6 |      
 | ------ | - | - | - | - | - | - |      
