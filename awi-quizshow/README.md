@@ -18,6 +18,7 @@ More information on the ArtistryWare line of IoT boards can be found at https://
 All functions are contained in separate header and source files. The main file starts the tasks needed for functioning and then closes.
 
 | Function  | Header     | Source     | Description                             |
+| --------- | ---------- | ---------- | --------------------------------------- |
 | GPIO      | qs_gpio.h  | qs_gpio.c  | GPIO configuration                      |
 | I2C       | qs_i2c.h   | qs_i2c.c   | I2C initialization and processing       |
 | Bluetooth | qs_blue.h  | qs_blue.c  | Bluetooth SPP connection and processing |
