@@ -49,7 +49,7 @@ Player button inputs are wired to the UE101A 12 position screw terminal connecto
 
 | Player | 1 | 2 | 3 | 4 | 5 | 6 | Restart |
 | ------ | - | - | - | - | - | - | ------- |
-|        | 1 | 2 | 3 | 4 | 5 | 6 |    7    |
+| Input  | 1 | 2 | 3 | 4 | 5 | 6 |    7    |
 
 #### UE102A Outputs
 
@@ -59,11 +59,11 @@ Indicators include button LEDs and, for the front indicators, we used LED truck 
 
 | Button | 1 | 2 | 3 | 4 | 5 | 6 |      
 | ------ | - | - | - | - | - | - |      
-|        | 1 | 2 | 3 | 4 | 5 | 6 |      
+| Output | 1 | 2 | 3 | 4 | 5 | 6 |      
 
 | Indicator | 1 | 2 | 3 | 4  | 5  | 6  |
 | --------- | - | - | - | -- | -- | -- |
-|           | 7 | 8 | 9 | 10 | 11 | 12 |
+| Output    | 7 | 8 | 9 | 10 | 11 | 12 |
 
 ### AWI Quiz Show App
 
