@@ -6,7 +6,7 @@
 
 ## Overview
 
-This firmware utilizes the UI100B (control board) as a quiz show style processor. It reads up to six (6) player button inputs using the UE101A (input expansion) and indicates which player pressed first using the UE102A (output expansion) driving LED indicators. An application has been created using MIT App Inventor to connect with the UI100A via Bluetooth for player feedback and restarting the player scanning.
+This firmware utilizes the UI100B (control board) as a quiz show style processor. It reads up to six (6) player button inputs using the UE101A (input expansion) and indicates which player pressed first using the UE102A (output expansion) driving LED indicators. An app has been created to connect with the controller via Bluetooth to get player feedback and restart the player input scanning.
 More information on the ArtistryWare line of IoT boards can be found at https://artistryware.com/iot/.
 
 ## How to use the firmware
@@ -51,6 +51,10 @@ Indicators include button LEDs and, for the front indicators, we used LED truck 
 | Indicator | 1 | 2 | 3 | 4  | 5  | 6  |
 | --------- | - | - | - | -- | -- | -- |
 |           | 7 | 8 | 9 | 10 | 11 | 12 |
+
+### AWI Quiz Show App
+
+An Android app has been created using the MIT App Inventor website and can be used to get player input feedback and restart the scanning. 
 
 ### Build and Flash
 
