@@ -1,15 +1,14 @@
 # AWI Quiz Show
 
-This firmware provides an example of how to use the UE101A (input) and UE102A (output) expansion boards as well as the UI100B AC control.
+This firmware provides an example of how to use the UE101A (input) and UE102A (output) expansion boards, as well as the UI100B AC control and on-board LEDs.
 
 | Boards Used | UI100B  | UE101A | UI102A |
 | ----------- | ------- | ------ | ------ |
-|             | Control |  Input | Output |
+|             | Control | Input  | Output |
 
 ## Overview
 
 This firmware utilizes the UI100B (control board) as a quiz show style processor. It reads up to six (6) player button inputs using the UE101A (input expansion) and indicates which player pressed first using the UE102A (output expansion) driving LED indicators. The UI100B also controls an AC buzzer when the player hits the button. An app has been created to connect with the controller via Bluetooth to get player feedback and restart the player input scanning.
-More information on the ArtistryWare line of IoT boards can be found at https://artistryware.com/iot/.
 
 ## How to use the firmware
 
@@ -26,7 +25,7 @@ All functions are contained in separate header and source files. The main file s
 
 ### Hardware Required
 
-To run this example, you should have an Artistryware UI100B main control board connected to a UE101A and UE102A expansion boards. Please feel free to contact us if you would like to purchase these boards.
+To run this firmware, you will need an AWI UI100B main control board connected to UE101A and UE102A expansion boards. Please feel free to contact us if you would like to purchase these boards.
 
 #### I2C Assignments
 
@@ -35,6 +34,8 @@ To run this example, you should have an Artistryware UI100B main control board c
 | Board  | SDA  | SCL  |
 | ------ | ---- | ---- |
 | UI100B |  21  |  22  |
+
+**Note** The expansion board I2C address is settable using the on-board jumpers. You will need to arrange the jumpers according to the address you want. Please refer to the silk screen table on the board.
 
 | Board  | Address |
 | ------ | ------- |
