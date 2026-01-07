@@ -1,6 +1,6 @@
 # AWI Quiz Show
 
-This firmware was created using the older expansion boards. The new expansions boards only provide eight (8) inputs and outputs. The firmware needs to be modified for only four (4) buttons and indicators.
+This firmware was created using the older expansion boards. The new expansions boards only provide eight (8) inputs and outputs. TO use this firmware with the new expansion boards, it needs to be modified for only four (4) buttons and indicators.
 
 This firmware provides an example of how to use the UE101A (input) and UE102A (output) expansion boards, as well as the UI100B AC control and on-board LEDs.
 
